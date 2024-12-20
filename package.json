@@ -6,7 +6,8 @@
     "dev": "concurrently \"json-server --watch db.json --port 3001 --m ./node_modules/json-server-auth\" \"vite --open\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cypress:open": "concurrently \"json-server --watch db.json --port 3001 --m ./node_modules/json-server-auth\" \"cypress open\""
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.0",

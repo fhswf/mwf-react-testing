@@ -1,18 +1,22 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
+import authReducer from "./../features/auth/authSlice";
 import cartReducer from "./../features/cart/cartSlice";
 import productReducer from "./../features/product/productSlice";
-import { useDispatch } from "react-redux";
+
 
 const store = configureStore({
     reducer: {
-        cart: cartReducer,
-        products: productReducer
+      auth: authReducer,
+      cart: cartReducer,
+      products: productReducer
     }
 });
 
 export function setupStore(preloadedState) {
     return configureStore({
       reducer: {
+        auth: authReducer,
         cart: cartReducer,
         products: productReducer
       },

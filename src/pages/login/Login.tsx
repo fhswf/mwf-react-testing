@@ -1,7 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../../store";
+import { loginUser } from "../../features/auth/authActions";
 
 const Login = () => {
 
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const { loading, userInfo, error } = useSelector((state: RootState) => state.auth)
+
+    useEffect(() => {
+        if (userInfo) {
+            navigate('/admin');
+        }
+    }, [navigate, userInfo])
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -17,16 +31,7 @@ const Login = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
        
-        /*
-        // Aufgabe: Übermitteln Sie die Daten an den JSON-Server http://localhost:3001/login
-        const response = await axios.post("http://localhost:3001/login", formData);
-        console.log(response.data);
-
-        const { accessToken } = response.data;
-        localStorage.setItem("accessToken", accessToken);
-        */
-
-        
+        dispatch(loginUser(formData));
 
     };
 

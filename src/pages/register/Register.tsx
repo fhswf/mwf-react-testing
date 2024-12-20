@@ -1,13 +1,22 @@
-import axios from "axios";
 import { useState } from "react";
+import { RootState, useAppDispatch } from "../../store";
+import { Spinner } from "../../components/spinner/Spinner";
+import { registerUser } from "../../features/auth/authActions";
+import { useSelector } from "react-redux";
 
 const Register = () => {
 
+    const { loading, userInfo, error, success } = useSelector(
+        (state: RootState) => state.auth
+    );
+
+    const dispatch = useAppDispatch();
+
     const [formData, setFormData] = useState({
-        firstname: "",
-        lastname: "",
-        email: "",
-        password: ""
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: ''
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,9 +30,14 @@ const Register = () => {
         e.preventDefault();
         console.log(formData);
 
-        // Aufgabe: Übermitteln Sie die Daten an den JSON-Server http://localhost:3001/users
-        const response = await axios.post("http://localhost:3001/users", formData);
-        console.log(response.data);
+        dispatch(registerUser({ ...formData }));
+
+        setFormData({
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: ''
+        })
 
     };
 
@@ -39,19 +53,23 @@ const Register = () => {
 
                     <form className="space-y-6" method="POST" onSubmit={e => handleSubmit(e)}>
                         
+                        <div>
+                            {error && <span>{error}</span>}
+                        </div>
+
                         {/* Vorname */}
                         <div>
-                            <label htmlFor="firstname" className="block text-sm font-medium leading-6 text-gray-900">Vorname</label>
+                            <label htmlFor="firstName" className="block text-sm font-medium leading-6 text-gray-900">Vorname</label>
                             <div className="mt-2">
-                                <input type="text" name="firstname" id="firstname" value={formData.firstname} onChange={e => handleChange(e)} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:text-gray-900 sm:text-sm sm:leading-6" placeholder="Max" />
+                                <input type="text" name="firstName" id="firstName" value={formData.firstName} onChange={e => handleChange(e)} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:text-gray-900 sm:text-sm sm:leading-6" placeholder="Max" />
                             </div>
                         </div>
 
                         {/* Nachname */}
                         <div>
-                            <label htmlFor="lastname" className="block text-sm font-medium leading-6 text-gray-900">Nachname</label>
+                            <label htmlFor="lastName" className="block text-sm font-medium leading-6 text-gray-900">Nachname</label>
                             <div className="mt-2">
-                                <input type="text" name="lastname" id="lastname" value={formData.lastname} onChange={e => handleChange(e)} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:text-gray-900 sm:text-sm sm:leading-6" placeholder="Mustermann" />
+                                <input type="text" name="lastName" id="lastName" value={formData.lastName} onChange={e => handleChange(e)} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:text-gray-900 sm:text-sm sm:leading-6" placeholder="Mustermann" />
                             </div>
                         </div>
 
@@ -73,7 +91,9 @@ const Register = () => {
 
                         {/* Submit */}
                         <div>
-                            <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Register</button>
+                            <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" disabled={loading}>
+                                {loading ? <Spinner /> : 'Register'}
+                            </button>
                         </div>
 
                     </form>
