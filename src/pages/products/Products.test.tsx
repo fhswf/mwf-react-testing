@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { Products } from './Products';
 import { setupStore } from '../../store';
 
-//vi.mock('axios');
+vi.mock('axios');
 
 function renderWithProviders(
   ui: React.ReactNode,
@@ -39,7 +39,8 @@ describe('Products', () => {
         ];
 
         // Mock Axios to return the mock products
-        vi.spyOn(axios, 'get').mockResolvedValueOnce({ data: mockProducts });
+        //vi.spyOn(axios, 'get').mockResolvedValueOnce({ data: mockProducts });
+        vi.mocked(axios.get).mockResolvedValue({ data: mockProducts });
 
         renderWithProviders(<Products />, {
             initialState: {
