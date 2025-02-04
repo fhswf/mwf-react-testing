@@ -4,7 +4,8 @@ import { QuantitySelector } from "../../components/quantityselector/QuantitySele
 import { StyledBadge } from "../../components/styledbadge/StyledBadge";
 import { Product } from "../../models/Product";
 import { useSelector } from "react-redux";
-import { fetchProducts, getError, getLoading, getProducts } from "../../features/product/productSlice";
+import { getError, getLoading, getProducts } from "../../features/product/productSlice";
+import { fetchProducts } from "../../features/product/productActions";
 import { useAppDispatch } from "../../store";
 
 const Products = () => {
@@ -47,11 +48,11 @@ const Products = () => {
                         
                     </div>
 
-                    {loading && (<div className="pt-10">
+                    {loading && (<div className="loading-message pt-10">
                         Produkte werden geladen...
                     </div>)}
 
-                    {error && (<div className="pt-10 text-red-500">
+                    {error && (<div className="error-message pt-10 text-red-500">
                         {error}
                     </div>)}
 
@@ -72,13 +73,13 @@ const Products = () => {
                                         
                                         {(filteredProducts.length > 0) && filteredProducts.map((product: Product) => (
                                         <tr key={product.id}>
-                                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                                            <td className="product-name whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                                                 <Link to={`${product.id}`}>
                                                     {product.name}
                                                 </Link>
                                             </td>
-                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{product.price} EUR</td>
-                                            <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                                            <td className="product-price whitespace-nowrap px-3 py-4 text-sm text-gray-500">{product.price} EUR</td>
+                                            <td className="cart-quantity relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                                                 {/*<Link to={`${product.id}`} className="text-indigo-600 hover:text-indigo-900">Edit</Link>*/}
                                                 <QuantitySelector product={product} />
                                             </td>

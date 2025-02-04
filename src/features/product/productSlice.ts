@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Product } from '../../models/Product';
-import axios from 'axios';
 import { RootState } from '../../store';
+import { fetchProducts } from './productActions';
 
 interface ProductState {
     loading: boolean;
@@ -14,20 +14,6 @@ export const initialState: ProductState = {
     products: [],
     error: ''
 };
-
-const fetchProducts = createAsyncThunk<Product[], void, { rejectValue: string }>(
-    'product/fetchProducts',
-    async (_, { rejectWithValue }) => {
-        try {
-            const response = await axios.get<Product[]>('http://localhost:3001/products');
-            const products = response.data;
-            return products;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            return rejectWithValue(error.message);
-        }
-    }
-);
 
 const productSlice = createSlice({
     name: 'product',
@@ -79,6 +65,6 @@ const getError = createSelector(
 );
 
 export const { productsFetching, productsFetched, productsFailed } = productSlice.actions;
-export { fetchProducts, getProducts, getLoading, getError };
+export { getProducts, getLoading, getError };
 export { productSlice };
 export default productSlice.reducer;

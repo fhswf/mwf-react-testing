@@ -3,7 +3,7 @@ import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render , screen, waitFor } from '@testing-library/react';
 import axios from 'axios';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Products } from './Products';
 import { setupStore } from '../../store';
@@ -20,9 +20,9 @@ function renderWithProviders(
   function Wrapper({ children }: { children: React.ReactNode}) {
     return (
         <Provider store={setupStore({ preloadedState: initialState })}>
-            <BrowserRouter>
+            <MemoryRouter>
                 {children}
-            </BrowserRouter>
+            </MemoryRouter>
         </Provider>
     );
   }
@@ -69,7 +69,7 @@ describe('Products', () => {
         });
 
         await waitFor(() => {
-            expect(screen.getByText('Product 1')).toBeInTheDocument();
+            expect(screen.getByText('Product 2')).toBeInTheDocument();
         });
 
     });
